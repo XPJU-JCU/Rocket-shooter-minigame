@@ -8,9 +8,11 @@ var rotation_direction = 0
 	set(newhp):
 		hp = newhp
 		if(hp == 0):
-			get_tree().reload_current_scene()	
-			hp+=1
-			Global.score = 0
+			Engine.time_scale = 0	
+			$"../Score/Panel3".visible = true
+			hp = 1
+			
+
 
 @onready var projectile = preload("res://Bullet.tscn")
 @export var spawnpoint : Sprite2D
@@ -21,7 +23,7 @@ func get_input():
 	if Input.is_action_just_pressed("shoot"):
 		shoot()
 
-func _physics_process(delta):	
+func _process(delta):	
 	rotation += rotation_direction * rotation_speed * delta
 	get_input()
 	move_and_slide()
@@ -48,3 +50,11 @@ func _on_area_2d_body_entered(body: Node2D):
 			
 func _on_area_2d_area_entered(area: Area2D):
 	checkEntry(area)
+
+
+func _on_btn_restart_pressed() -> void:
+	get_tree().reload_current_scene()
+	Engine.time_scale = 1
+	Global.score -= Global.score
+	Global.hp -= Global.hp
+	Global.hp += 1
